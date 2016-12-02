@@ -13,7 +13,7 @@ scp configread.py jenkins@$PRODUCTION_SERVER:$PRODUCTION_DIR/$PROJECT/dockerbuil
 scp $PROJECT.py jenkins@$PRODUCTION_SERVER:$PRODUCTION_DIR/$PROJECT/dockerbuild
 scp pynetdevices.py jenkins@$PRODUCTION_SERVER:$PRODUCTION_DIR/$PROJECT/dockerbuild
 scp pyslack.py jenkins@$PRODUCTION_SERVER:$PRODUCTION_DIR/$PROJECT/dockerbuild
-ssh jenkins@$PRODUCTION_SERVER "sudo docker stop `sudo docker ps --filter ancestor=ubuntu:$PROJECT --format \"table {{.ID}}\" | sed '1,1d'`"
+ssh jenkins@$PRODUCTION_SERVER "sudo docker stop `sudo docker ps --filter ancestor=ubuntu:$PROJECT --format \"table {{.ID}}\"`"
 ssh jenkins@$PRODUCTION_SERVER "sudo docker build -t ubuntu:$PROJECT $PRODUCTION_DIR/$PROJECT/dockerbuild"
 ssh jenkins@$PRODUCTION_SERVER "sudo docker run -d -t -v $PRODUCTION_DIR/$PROJECT/data:$PRODUCTION_DIR/$PROJECT/data -v $CONFIG_DIR:$CONFIG_DIR:ro ubuntu:$PROJECT"
 scp outputsend.sh jenkins@$PRODUCTION_SERVER:$PRODUCTION_DIR/$PROJECT
