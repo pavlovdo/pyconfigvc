@@ -8,7 +8,8 @@ from pynetdevices import CiscoASA, CiscoNexus, CiscoRouter, CiscoSwitch
 
 git_init = False
 
-conf_file = '/etc/orbit/' + os.path.basename(__file__).split('.')[0] + '.conf'
+conf_file = ('/etc/orbit/' + os.path.basename(__file__).split('.')[0] + '/'
+             + os.path.basename(__file__).split('.')[0] + '.conf')
 
 # Read the configuration file with parameters,
 # location of configuration file - as in production system
