@@ -10,11 +10,8 @@ ssh jenkins@$PRODUCTION_SERVER "sudo chown -vR jenkins:jenkins $PRODUCTION_DIR"
 scp Dockerfile jenkins@$PRODUCTION_SERVER:$PRODUCTION_DIR/$PROJECT/dockerbuild
 scp configread.py jenkins@$PRODUCTION_SERVER:$PRODUCTION_DIR/$PROJECT/dockerbuild
 scp $PROJECT.py jenkins@$PRODUCTION_SERVER:$PRODUCTION_DIR/$PROJECT/dockerbuild
-scp $PROJECT.conf jenkins@$PRODUCTION_SERVER:$PRODUCTION_DIR/$PROJECT/dockerbuild
 scp pynetdevices.py jenkins@$PRODUCTION_SERVER:$PRODUCTION_DIR/$PROJECT/dockerbuild
-scp pynetdevices.conf jenkins@$PRODUCTION_SERVER:$PRODUCTION_DIR/$PROJECT/dockerbuild
 scp pyslack.py jenkins@$PRODUCTION_SERVER:$PRODUCTION_DIR/$PROJECT/dockerbuild
-scp devices.conf jenkins@$PRODUCTION_SERVER:$PRODUCTION_DIR/$PROJECT/dockerbuild
 ssh jenkins@$PRODUCTION_SERVER "sudo docker build -t ubuntu:$PROJECT $PRODUCTION_DIR/$PROJECT/dockerbuild"
 scp dockercheck.sh jenkins@$PRODUCTION_SERVER:$PRODUCTION_DIR/$PROJECT
 scp outputsend.sh jenkins@$PRODUCTION_SERVER:$PRODUCTION_DIR/$PROJECT

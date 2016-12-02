@@ -8,19 +8,17 @@ from pynetdevices import CiscoASA, CiscoNexus, CiscoRouter, CiscoSwitch
 
 git_init = False
 
+conf_file = '/etc/orbit/' + os.path.basename(__file__).split('.')[0] + '.conf'
+
 # Read the configuration file with parameters,
 # location of configuration file - as in production system
-asa_parameters = configread('/usr/local/orbit/pyconfigvc/pyconfigvc.conf',
-                            'CiscoASA', 'enablepw')
+asa_parameters = configread(conf_file, 'CiscoASA', 'enablepw')
 
-git_parameters = configread('/usr/local/orbit/pyconfigvc/pyconfigvc.conf',
-                            'GIT', 'author_name', 'committer_name',
+git_parameters = configread(conf_file, 'GIT', 'author_name', 'committer_name',
                             'author_email', 'committer_email')
 
-nd_parameters = configread('/usr/local/orbit/pyconfigvc/pyconfigvc.conf',
-                           'NetworkDevice', 'login', 'password', 'slack_hook',
-                           'device_file', 'savedir')
-
+nd_parameters = configread(conf_file, 'NetworkDevice', 'login', 'password',
+                           'slack_hook', 'device_file', 'savedir')
 
 if not os.path.isdir(nd_parameters['savedir']):
     os.makedirs(nd_parameters['savedir'])

@@ -8,8 +8,6 @@ RUN apt-get update &&\
 	apt-get install python3-requests -y
 
 ADD configread.py /usr/local/orbit/pyconfigvc/configread.py
-ADD devices.conf /usr/local/orbit/pyconfigvc/devices.conf
-ADD pyconfigvc.conf /usr/local/orbit/pyconfigvc/pyconfigvc.conf
 ADD pyconfigvc.py /usr/local/orbit/pyconfigvc/pyconfigvc.py
 ADD pynetdevices.py /usr/local/orbit/pyconfigvc/pynetdevices.py
 ADD pyslack.py /usr/local/orbit/pyconfigvc/pyslack.py
