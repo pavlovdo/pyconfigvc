@@ -17,7 +17,7 @@ scp dockerrun.sh jenkins@$PRODUCTION_SERVER:$PRODUCTION_DIR/$PROJECT
 scp outputsend.sh jenkins@$PRODUCTION_SERVER:$PRODUCTION_DIR/$PROJECT
 ssh jenkins@$PRODUCTION_SERVER "chmod -v u+x $PRODUCTION_DIR/$PROJECT/dockerrun.sh"
 ssh jenkins@$PRODUCTION_SERVER "chmod -v u+x $PRODUCTION_DIR/$PROJECT/outputsend.sh"
-ssh jenkins@$PRODUCTION_SERVER "echo '*/5 * * * *	$PRODUCTION_DIR/$PROJECT/dockercheck.sh' > /tmp/crontab"
+ssh jenkins@$PRODUCTION_SERVER "echo '*/5 * * * *	$PRODUCTION_DIR/$PROJECT/dockerrun.sh' > /tmp/crontab"
 ssh jenkins@$PRODUCTION_SERVER "echo '0 */1 * * *       $PRODUCTION_DIR/$PROJECT/outputsend.sh' >> /tmp/crontab"
 ssh jenkins@$PRODUCTION_SERVER "crontab /tmp/crontab"
 ssh jenkins@$PRODUCTION_SERVER "rm /tmp/crontab"
