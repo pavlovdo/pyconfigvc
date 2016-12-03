@@ -1,18 +1,13 @@
 FROM dr.forum.lo/ubuntu:python3-cron
 MAINTAINER Denis O. Pavlov pavlovdo@gmail.com
 
-RUN apt-get update &&\
-      apt-get upgrade -y &&\
-	apt-get install python3-pygit2 -y &&\
-	apt-get install python3-paramiko -y &&\
-	apt-get install python3-requests -y
+RUN apt-get update && apt-get upgrade -y && apt-get install -y \
+	python3-paramiko \
+	python3-pygit2 \
+	python3-requests
 
-ADD configread.py /usr/local/orbit/pyconfigvc/configread.py
-ADD pyconfigvc.py /usr/local/orbit/pyconfigvc/pyconfigvc.py
-ADD pynetdevices.py /usr/local/orbit/pyconfigvc/pynetdevices.py
-ADD pyslack.py /usr/local/orbit/pyconfigvc/pyslack.py
+ADD *.py /usr/local/orbit/pyconfigvc/
 
-RUN echo "00 04 * * *	/usr/local/orbit/pyconfigvc/pyconfigvc.py > /usr/local/orbit/pyconfigvc/data/output" > /tmp/crontab
-RUN crontab /tmp/crontab
-RUN rm /tmp/crontab
+RUN echo "00 04 * * *	/usr/local/orbit/pyconfigvc/pyconfigvc.py > /usr/local/orbit/pyconfigvc/data/output" > /tmp/crontab && \
+	crontab /tmp/crontab && rm /tmp/crontab
 CMD /usr/sbin/cron -f
