@@ -5,9 +5,10 @@ PRODUCTION_DIR=/usr/local/orbit
 CONFIG_DIR=/etc/orbit/$PROJECT
 HOST_MOUNT_DIR=
 
-if [ -f $PRODUCTION_DIR/$PROJECT/$PROJECT.docker.newimage ]
+PROJECTCONTAINERS=`sudo docker ps --filter ancestor=ubuntu:$PROJECT --format "table {{.ID}}" | sed '1,1d'`
+
+if [ -z $PROJECTCONTAINERS ] || [ -f $PRODUCTION_DIR/$PROJECT/$PROJECT.docker.newimage ]
 then
-	PROJECTCONTAINERS=`sudo docker ps --filter ancestor=ubuntu:$PROJECT --format "table {{.ID}}" | sed '1,1d'`
 	echo 'Stopping project '$PROJECT' containers:'
 	sudo docker stop $PROJECTCONTAINERS
 	if [ -z $HOST_MOUNT_DIR ]
