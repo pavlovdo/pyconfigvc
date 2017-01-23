@@ -1,10 +1,17 @@
-FROM dr.forum.lo/ubuntu:python3-cron
+FROM ubuntu:latest
 MAINTAINER Denis O. Pavlov pavlovdo@gmail.com
 
 RUN apt-get update && apt-get install -y \
+	cron \
+	curl \
+	python3 \
 	python3-paramiko \
 	python3-pygit2 \
 	python3-requests
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN ln -fs /usr/share/zoneinfo/Europe/Moscow /etc/localtime && dpkg-reconfigure --frontend noninteractive tzdata
 
 COPY *.py /usr/local/orbit/pyconfigvc/
 
