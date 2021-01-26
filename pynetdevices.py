@@ -2,6 +2,7 @@
 
 
 class NetworkDevice:
+    """ base class for network devices """
 
     def __init__(self, hostname, ip, slack_hook, login=None, password=None,
                  enablepw=None):
@@ -15,6 +16,7 @@ class NetworkDevice:
 
 
 class CiscoDevice(NetworkDevice):
+    """ base class for cisco devices """
 
     def getConfig(self, printing=False):
 
@@ -39,7 +41,7 @@ class CiscoDevice(NetworkDevice):
 
             if printing:
                 for confline in conflist:
-                    print (confline)
+                    print(confline)
 
             client.close()
 
@@ -60,6 +62,7 @@ class CiscoDevice(NetworkDevice):
 
 
 class CiscoASA(CiscoDevice):
+    """ class for cisco asa """
 
     def getConfig(self, endstring=': end', printing=False):
 
@@ -90,7 +93,7 @@ class CiscoASA(CiscoDevice):
 
         if printing:
             for confline in conflist:
-                print (confline)
+                print(confline)
 
         channel.close()
         client.close()
@@ -99,63 +102,22 @@ class CiscoASA(CiscoDevice):
 
 
 class CiscoNexus(CiscoDevice):
+    """ class for cisco nexuses """
     pass
 
 
 class CiscoRouter(CiscoDevice):
+    """ class for cisco routers """
     pass
 
 
 class CiscoSwitch(CiscoDevice):
+    """ class for cisco switches """
     pass
 
 
-class IPMICard(NetworkDevice):
-
-    def Connect(self, slack_hook):
-
-        import pyghmi.ipmi.command
-        from pyslack import slack_post
-        import sys
-
-        try:
-            connect = pyghmi.ipmi.command.Command(bmc=self.ip,
-                                                  userid=self.login,
-                                                  password=self.password,
-                                                  onlogon=None, kg=None)
-        except pyghmi.exceptions.IpmiException as error_name:
-            slack_post(slack_hook, 'Can\'t connect to the IPMI: '
-                       + str(error_name), self.hostname, self.ip)
-            exit(1)
-        except:
-            slack_post(slack_hook, 'Unexpected exception in ' +
-                       '\"imm.Connect().get_sensor_descriptions()\": '
-                       + str(sys.exc_info()), self.hostname, self.ip)
-            exit(1)
-
-        return connect
-
-    def getSDRSensors(self):
-
-        import pyghmi.ipmi.sdr
-
-        ipmicmd = self.Connect()
-        sdr = pyghmi.ipmi.sdr.SDR(ipmicmd)
-        for number in sdr.get_sensor_numbers():
-            rsp = ipmicmd.raw_command(command=0x2d, netfn=4, data=(number,))
-            if 'error' in rsp:
-                continue
-            reading = sdr.sensors[number].decode_sensor_reading(rsp['data'])
-            if reading is not None:
-                print (repr(reading))
-
-    def PrintAttrs(self):
-        print (self.host)
-        print (self.login)
-        print (self.password)
-
-
 class LinuxServer(NetworkDevice):
+    """ class for linux servers """
 
     def getConfig(self, remotepath, tempdir='./tmp/',
                   use_key_pairs=True, printing=False):
@@ -194,4 +156,4 @@ class LinuxServer(NetworkDevice):
         if not os.path.isfile(dstpath) or overwrite:
             os.rename(self.tempdir + filename, dstpath)
         else:
-            print ('File ' + dstpath + ' is already exist, keep the old file')
+            print('File ' + dstpath + ' is already exist, keep the old file')

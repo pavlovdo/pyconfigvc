@@ -1,15 +1,20 @@
 #!/usr/bin/env python3
 
+#
+# Backup and versioning configuration of Cisco network devices
+#
+
+import os
+
 from configread import configread
 from datetime import datetime
-import os
 from pygit2 import Repository, Signature, init_repository
 from pynetdevices import CiscoASA, CiscoNexus, CiscoRouter, CiscoSwitch
 
 git_init = False
 
-conf_file = ('/etc/orbit/' + os.path.basename(__file__).split('.')[0] + '/'
-             + os.path.basename(__file__).split('.')[0] + '.conf')
+# set config file name
+conf_file = '/usr/local/orbit/pyconfigvc/conf.d/pyconfigvc.conf'
 
 # Read the configuration file with parameters,
 # location of configuration file - as in production system
@@ -72,7 +77,7 @@ for device_line in device_list_file:
     device.saveConfig(device_config, nd_parameters['savedir'])
     diff = index.diff_to_workdir()
     if diff.patch:
-        print (diff.patch + '\n')
+        print(diff.patch + '\n')
 #   Add configuration of network device to index cache
     index.add(device_name)
 
